@@ -96,12 +96,6 @@ exports.registerAspirant = asyncWrapper(async (req, res) => {
 // @route     /api/login
 // @access    PUBLIC
 exports.loginUser = asyncWrapper(async (req, res) => {
-  const { error } = validate(req.body);
-  if (error)
-    return res
-      .status(StatusCodes.BAD_REQUEST)
-      .json({ status: "ERROR", message: error.details[0].message });
-
   const user = await User.findOne({ email: req.body.email });
   if (!user)
     return res

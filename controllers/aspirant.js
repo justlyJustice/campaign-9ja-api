@@ -34,6 +34,14 @@ exports.uploadAvatar = asyncWrapper(async (req, res) => {
       {
         $set: {
           avatar: result.secure_url,
+          currentPosition: req.body.currentPosition,
+          contestingFor: req.body.contestingFor,
+          contestingParty: req.body.contestingParty,
+          blueprint: req.body.blueprint,
+          previousAchievements: req.body.previousAchievements,
+          socialResponsibility: req.body.socialResponsibility,
+          profile: req.body.profile,
+          quotes: req.body.quotes,
         },
       },
       { new: true }
@@ -49,6 +57,14 @@ exports.uploadAvatar = asyncWrapper(async (req, res) => {
         "state",
         "lga",
         "avatar",
+        "currentPosition",
+        "contestingFor",
+        "contestingParty",
+        "blueprint",
+        "previousAchievements",
+        "socialResponsibility",
+        "profile",
+        "quotes",
       ]),
     });
   });

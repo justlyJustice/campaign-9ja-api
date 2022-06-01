@@ -39,6 +39,35 @@ const aspirantSchema = new Schema(
     avatar: {
       type: String,
     },
+    currentPosition: {
+      type: String,
+    },
+    contestingFor: {
+      type: String,
+    },
+    contestingParty: {
+      type: String,
+    },
+    blueprint: {
+      type: String,
+      min: 5,
+    },
+    previousAchievements: {
+      type: String,
+      min: 5,
+    },
+    socialResponsibility: {
+      type: String,
+      min: 5,
+    },
+    profile: {
+      type: String,
+      min: 5,
+    },
+    quotes: {
+      type: String,
+      min: 5,
+    },
   },
   { timestamps: true }
 );

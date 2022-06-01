@@ -1,11 +1,11 @@
 const bcrypt = require("bcrypt");
 const { UserVerification } = require("../models/UserVerification");
 const { Aspirant } = require("../models/Aspirant");
-const { StatusCodes } = require('http-status-codes');
+const { StatusCodes } = require("http-status-codes");
 const asyncWrapper = require("../middlewares/async");
 
 // @DESC      Verify user email
-// @ROUTE   
+// @ROUTE
 // @ACCESS    Public
 exports.verifyEmail = async (req, res) => {
   const { userId, uniqueString } = req.params;
@@ -48,7 +48,7 @@ exports.verifyEmail = async (req, res) => {
 };
 
 // @DESC      Rendering the success-page on email verification
-// @ROUTE   
+// @ROUTE
 // @ACCESS    Public
 exports.verified = async (req, res) => {
   res.render("main");
@@ -57,19 +57,27 @@ exports.verified = async (req, res) => {
 // @DESC      Get presidential candidates
 // @ROUTE     /presidential-candidates
 // @ACCESS    Private
-exports.getPresidentialCandidates = async(req, res) => {
-  const aspirants = await Aspirant.findOne({ category: 'presidential-candidate'})
-  if(!aspirants) return res.status(StatusCodes.BAD_REQUEST).json({ message: 'No presidential candidate yet'});
+exports.getPresidentialCandidates = async (req, res) => {
+  const aspirants = await Aspirant.find({ category: 'presidential-candidate'});
+  if (!aspirants)
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ message: "No presidential candidate yet" });
 
-  res.status(StatusCodes.OK).json({ aspirants })
-}
+  res.status(StatusCodes.OK).json({ aspirants });
+};
 
 // @DESC      Get governorship candidates
 // @ROUTE     /governorship-candidates
 // @ACCESS    Private
-exports.getGovernorshipCandidates = async(req, res) => {
-  const aspirants = await Aspirant.findOne({ category: 'governorship-candidate'});
-  if(!aspirants) return res.status(StatusCodes.BAD_REQUEST).json({ message: 'No governorship candidate yet'})
+exports.getGovernorshipCandidates = async (req, res) => {
+  const aspirants = await Aspirant.find({
+    category: "governorship-candidate",
+  });
+  if (!aspirants)
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ message: "No governorship candidate yet" });
 
-  res.status(StatusCodes.OK).json({ aspirants })
-}
+  res.status(StatusCodes.OK).json({ aspirants });
+};
