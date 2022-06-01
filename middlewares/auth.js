@@ -6,7 +6,7 @@ exports.ensureToken = (req, res, next) => {
   if (!token)
     return res
       .status(StatusCodes.UNAUTHORIZED)
-      .json({ error: "Oops! Login to access this route" });
+      .json({ error: "Oops! You're not logged in" });
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);

@@ -11,6 +11,7 @@ const errorHandler = require("./middlewares/error-handler");
 // @import - Routes
 const authRoute = require("./routes/auth");
 const userRoute = require("./routes/users");
+const aspirantRoute = require("./routes/aspirant");
 const commentRoute = require("./routes/comments");
 // @import - Nodemailer Transport
 require("./utils/nodemailer");
@@ -32,6 +33,7 @@ const port = process.env.PORT || 3000;
 // Routes Init
 app.use("/api", authRoute);
 app.use("/api", userRoute);
+app.use("/api/aspirant", aspirantRoute);
 app.use("/api/comments", commentRoute);
 
 // Custom middlewares

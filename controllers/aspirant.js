@@ -1,36 +1,68 @@
-const { Aspirant, validateAspirant } = require("../models/Aspirant");
+const { Aspirant } = require("../models/Aspirant");
 const { StatusCodes } = require("http-status-codes");
 const _ = require("lodash");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const multer = require("../utils/multer");
 const cloudinary = require("../utils/cloudinary");
 const multerUploads = multer.multerUploads;
 const cloudinaryConfig = cloudinary.cloudinaryConfig;
 const datauri = multer.datauri;
 const asyncWrapper = require("../middlewares/async");
-const {
-  sendVerificationEmail,
-  sendResetEmail,
-} = require("../utils/nodemailer");
 
-exports.uploadProfile = asyncWrapper(async (req, res) => {
-    const file = datauri(req);
+// @desc    Upload aspirant avatar
+// @route   PUT /api/aspirant/aspirant-id
+// @access  PRIVATE
+exports.uploadAvatar = asyncWrapper(async (req, res) => {
+  const file = datauri(req);
 
-    cloudinary.uploader.upload(file.content, async (err, result) => {
-      if (err) throw err;
+  cloudinary.uploader.upload(file.content, async (err, result) => {
+    if (err) throw err;
 
-      const post = new Post({
-        avatar: result.secure_url
-      });
+    let aspirant = await Aspirant.findById(req.params.id);
+    if (!aspirant)
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: "Aspirant not found!" });
 
-      const postTitle = await Post.findOne({ title: req.body.title });
-      if (postTitle)
-        res
-          .status(StatusCodes.BAD_REQUEST)
-          .json({ message: "Post already created!" });
+    if (aspirant.email !== req.user.email) {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ message: "Access denied! Not your profile" });
+    }
 
-      await post.save();
+    aspirant = await Aspirant.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: {
+          avatar: result.secure_url,
+        },
+      },
+      { new: true }
+    );
 
-      res.status(StatusCodes.CREATED).json({ post });
+    await aspirant.save();
+
+    res.status(StatusCodes.CREATED).json({
+      aspirant: _.pick(aspirant, [
+        "_id",
+        "name",
+        "category",
+        "state",
+        "lga",
+        "avatar",
+      ]),
+    });
+  });
+});
+
+// @desc    Delete aspirant profile
+// @route   DELETE /api/aspirant/aspirant-id
+// @access  PRIVATE
+exports.deleteProfile = asyncWrapper(async (req, res) => {
+  const aspirant = await Aspirant.findByIdAndRemove(req.params.id);
+  if (!aspirant)
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ message: "Aspirant not found" });
+
+  res.status(StatusCodes.OK).json({ aspirant });
 });
