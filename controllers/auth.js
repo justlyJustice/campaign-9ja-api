@@ -67,6 +67,7 @@ exports.registerAspirant = asyncWrapper(async (req, res) => {
     email: req.body.email,
     password: req.body.password,
     category: req.body.category,
+    governorshipState: req.body.governorshipState,
     state: req.body.state,
     lga: req.body.lga,
   });

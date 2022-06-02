@@ -58,7 +58,7 @@ exports.verified = async (req, res) => {
 // @ROUTE     /presidential-candidates
 // @ACCESS    Private
 exports.getPresidentialCandidates = async (req, res) => {
-  const aspirants = await Aspirant.find({ category: 'presidential-candidate'});
+  const aspirants = await Aspirant.find({ category: "presidential-candidate" });
   if (!aspirants)
     return res
       .status(StatusCodes.BAD_REQUEST)
@@ -71,13 +71,19 @@ exports.getPresidentialCandidates = async (req, res) => {
 // @ROUTE     /governorship-candidates
 // @ACCESS    Private
 exports.getGovernorshipCandidates = async (req, res) => {
-  const aspirants = await Aspirant.find({
-    category: "governorship-candidate",
-  });
+  const { governorshipState } = req.query;
+
+  const queryObject = {};
+
+  if (governorshipState) {
+    queryObject.governorshipState = governorshipState;
+  }
+
+  const aspirants = await Aspirant.find(queryObject);
   if (!aspirants)
     return res
       .status(StatusCodes.BAD_REQUEST)
-      .json({ message: "No governorship candidate yet" });
+      .json({ message: "No governorship candidate yet for that state" });
 
   res.status(StatusCodes.OK).json({ aspirants });
 };

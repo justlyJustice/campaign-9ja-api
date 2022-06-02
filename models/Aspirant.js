@@ -28,6 +28,10 @@ const aspirantSchema = new Schema(
       enum: ["presidential-candidate", "governorship-candidate"],
       required: true,
     },
+    governorshipState: {
+      type: String,
+      default: "Bayelsa State",
+    },
     state: {
       type: String,
       default: "Bayelsa",

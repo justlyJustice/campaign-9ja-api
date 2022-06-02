@@ -28,7 +28,7 @@ app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "./views"));
 
 // Create port value
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 
 // Routes Init
 app.use("/api", authRoute);
