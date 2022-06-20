@@ -30,6 +30,10 @@ app.set("views", path.join(__dirname, "./views"));
 // Create port value
 const port = process.env.PORT || 4000;
 
+app.get("/", (req, res) => {
+  res.send("This is Campaign-9ja App");
+});
+
 // Routes Init
 app.use("/api", authRoute);
 app.use("/api", userRoute);
