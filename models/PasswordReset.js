@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema
 
-const passwordResetSchema = new mongoose.Schema({
+const passwordResetSchema = new Schema({
   userId: {
     type: String,
     required: true,

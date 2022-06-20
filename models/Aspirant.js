@@ -30,15 +30,14 @@ const aspirantSchema = new Schema(
     },
     governorshipState: {
       type: String,
-      default: "Bayelsa State",
     },
     state: {
       type: String,
-      default: "Bayelsa",
+      default: null,
     },
     lga: {
       type: String,
-      default: "Southern Ijaw",
+      default: null,
     },
     avatar: {
       type: String,
@@ -52,26 +51,34 @@ const aspirantSchema = new Schema(
     contestingParty: {
       type: String,
     },
-    blueprint: {
-      type: String,
-      min: 5,
-    },
-    previousAchievements: {
-      type: String,
-      min: 5,
-    },
-    socialResponsibility: {
-      type: String,
-      min: 5,
-    },
     profile: {
-      type: String,
-      min: 5,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Profile",
     },
-    quotes: {
-      type: String,
-      min: 5,
-    },
+    agendas: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Agenda",
+      },
+    ],
+    blueprints: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Blueprint",
+      },
+    ],
+    quotes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Quote",
+      },
+    ],
+    socialResponsibilities: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "SocialResponsibility",
+      },
+    ],
   },
   { timestamps: true }
 );

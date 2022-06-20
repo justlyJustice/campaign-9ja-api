@@ -58,32 +58,28 @@ exports.verified = async (req, res) => {
 // @ROUTE     /presidential-candidates
 // @ACCESS    Private
 exports.getPresidentialCandidates = async (req, res) => {
-  const aspirants = await Aspirant.find({ category: "presidential-candidate" });
+  const aspirants = await Aspirant.find({
+    category: "presidential-candidate",
+  }).populate("profile agendas blueprints quotes socialResponsibilities");
   if (!aspirants)
     return res
       .status(StatusCodes.BAD_REQUEST)
       .json({ message: "No presidential candidate yet" });
 
-  res.status(StatusCodes.OK).json({ aspirants });
+  res.status(StatusCodes.OK).json({ data: aspirants });
 };
 
 // @DESC      Get governorship candidates
 // @ROUTE     /governorship-candidates
 // @ACCESS    Private
 exports.getGovernorshipCandidates = async (req, res) => {
-  const { governorshipState } = req.query;
-
-  const queryObject = {};
-
-  if (governorshipState) {
-    queryObject.governorshipState = governorshipState;
-  }
-
-  const aspirants = await Aspirant.find(queryObject);
+  const aspirants = await Aspirant.find({
+    category: "governorship-candidate",
+  }).populate("profile agendas blueprints quotes socialResponsibilities");
   if (!aspirants)
     return res
       .status(StatusCodes.BAD_REQUEST)
       .json({ message: "No governorship candidate yet for that state" });
 
-  res.status(StatusCodes.OK).json({ aspirants });
+  res.status(StatusCodes.OK).json({ data: aspirants });
 };

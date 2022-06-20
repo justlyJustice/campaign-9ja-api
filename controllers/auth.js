@@ -72,6 +72,10 @@ exports.registerAspirant = asyncWrapper(async (req, res) => {
     lga: req.body.lga,
   });
 
+  if (aspirant.category === "presidential-candidate") {
+    aspirant.contestingFor = "President, Nigeria";
+  }
+
   const salt = await bcrypt.genSalt(10);
   aspirant.password = await bcrypt.hash(aspirant.password, salt);
 
@@ -116,14 +120,14 @@ exports.loginUser = asyncWrapper(async (req, res) => {
       .json({ status: "ERROR", message: "Incorrect username or password" });
 
   const token = jwt.sign(
-    { _id: user._id, email: user.email },
+    { _id: user._id, name: user.name, email: user.email },
     process.env.JWT_SECRET
   );
 
   res.header("x-auth-token", token).json({
     status: "SUCCESS",
     message: `Logged in as ${user.name}`,
-    user: _.pick(user, ["_id", "name", "email", "isVerified"]),
+    user: _.pick(user, ["_id", "name", "email", "profile", "isVerified"]),
   });
 });
 
