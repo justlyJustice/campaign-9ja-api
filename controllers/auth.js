@@ -44,7 +44,7 @@ exports.registerUser = asyncWrapper(async (req, res) => {
     process.env.JWT_SECRET
   );
 
-  res.status(StatusCodes.CREATED).header("x-auth-token", token).json({
+  res.header("x-auth-token", token).status(StatusCodes.CREATED).json({
     status: "SUCCESS",
     message: "Account registered! Proceed to login",
     user: _.pick(user, ["_id", "name", "email", "isVerified"]),
