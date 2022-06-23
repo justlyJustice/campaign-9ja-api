@@ -38,8 +38,13 @@ exports.registerUser = asyncWrapper(async (req, res) => {
   await user.save();
 
   // sendVerificationEmail(user, res);
+  
+   const token = jwt.sign(
+    { _id: aspirant._id, email: aspirant.email, name: aspirant.name },
+    process.env.JWT_SECRET
+  );
 
-  res.status(StatusCodes.CREATED).json({
+  res.status(StatusCodes.CREATED).header("x-auth-token", token).json({
     status: "SUCCESS",
     message: "Account registered! Proceed to login",
     user: _.pick(user, ["_id", "name", "email", "isVerified"]),
